@@ -685,7 +685,7 @@ function lotusSVG(pals,journal,scale=1){
   return s;
 }
 function defs(pals,P){
-  const sky1=mix('#fffcf4','#efe4c8',S.yin/100),sky2=mix('#f4ebd6','#d8c79d',S.yin/100);
+  const t=S.yin/100,tri=(a,b,c)=>t<.5?mix(a,b,t*2):mix(b,c,(t-.5)*2),sky1=tri('#fff3cf','#fbf6ea','#8f8bbd'),sky2=tri('#efc96f','#efe4c8','#34315a');
   let d=`<defs><linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".88"/><stop offset=".5" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#fff" stop-opacity=".72"/></linearGradient>
   <radialGradient id="nsky" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="${sky1}" stop-opacity=".92"/><stop offset="1" stop-color="${sky2}" stop-opacity=".95"/></radialGradient>
   <radialGradient id="core"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".75" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity=".15"/></radialGradient>
@@ -696,13 +696,35 @@ function defs(pals,P){
   pals.forEach((c,i)=>{d+=`<linearGradient id="pl${i}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${c[2]}" stop-opacity=".85"/><stop offset=".55" stop-color="${c[1]}" stop-opacity=".92"/><stop offset="1" stop-color="${c[0]}"/></linearGradient><linearGradient id="pr${i}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${mix(c[2],'#5a5070',.15)}" stop-opacity=".9"/><stop offset="1" stop-color="${c[1]}" stop-opacity=".9"/></linearGradient>`;});
   return d+'</defs>';
 }
+// each intention has its own petal silhouette and a sacred-geometry figure behind the flower
+const INT_SHAPE={'Emotional balance':'lotus','Self-love':'heart','Clarity':'point','Abundance':'round','Creativity':'flame','Rest & recovery':'round','Courage':'flame','Connection':'heart','New beginnings':'point','Letting go':'lotus'};
+function petalPath(shape,L,w){const F=f2;
+  if(shape==='heart')return`M0 0C${F(-w*.62)} ${F(-L*.3)} ${F(-w*.78)} ${F(-L*.96)} ${F(-w*.3)} ${F(-L)}C${F(-w*.1)} ${F(-L*1.02)} 0 ${F(-L*.92)} 0 ${F(-L*.84)}C0 ${F(-L*.92)} ${F(w*.1)} ${F(-L*1.02)} ${F(w*.3)} ${F(-L)}C${F(w*.78)} ${F(-L*.96)} ${F(w*.62)} ${F(-L*.3)} 0 0Z`;
+  if(shape==='point')return`M0 0C${F(-w*.34)} ${F(-L*.25)} ${F(-w*.28)} ${F(-L*.72)} 0 ${F(-L*1.14)}C${F(w*.28)} ${F(-L*.72)} ${F(w*.34)} ${F(-L*.25)} 0 0Z`;
+  if(shape==='round')return`M0 0C${F(-w*.9)} ${F(-L*.12)} ${F(-w*.82)} ${F(-L*.86)} 0 ${F(-L*.86)}C${F(w*.82)} ${F(-L*.86)} ${F(w*.9)} ${F(-L*.12)} 0 0Z`;
+  if(shape==='flame')return`M0 0C${F(-w*.72)} ${F(-L*.3)} ${F(-w*.05)} ${F(-L*.62)} ${F(-w*.3)} ${F(-L*1.06)}C${F(w*.38)} ${F(-L*.76)} ${F(w*.62)} ${F(-L*.36)} 0 0Z`;
+  return`M0 0C${F(-w*.55)} ${F(-L*.22)} ${F(-w*.55)} ${F(-L*.72)} 0 ${F(-L)}C${F(w*.55)} ${F(-L*.72)} ${F(w*.55)} ${F(-L*.22)} 0 0Z`;}
+function intentionGeo(name,R){const F=f2,poly=(n,r,off=-90)=>Array.from({length:n},(_,i)=>P2(off+i*360/n,r).join(' ')).join(' ');
+  switch(name){
+    case 'Emotional balance':return`<circle r="${F(R*.5)}"/>`+Array.from({length:6},(_,i)=>{const[x,y]=P2(-90+i*60,R*.5);return`<circle cx="${x}" cy="${y}" r="${F(R*.5)}"/>`;}).join('')+`<circle r="${R}"/>`;
+    case 'Self-love':case 'Connection':if(name==='Connection')return[-90,30,150].map(a=>{const[x,y]=P2(a,R*.38);return`<circle cx="${x}" cy="${y}" r="${F(R*.56)}"/>`;}).join('');
+      return[1,.72].map(k=>`<path d="M0 ${F(R*.8*k)}C${F(-R*1.15*k)} ${F(R*.05*k)} ${F(-R*.8*k)} ${F(-R*.98*k)} 0 ${F(-R*.42*k)}C${F(R*.8*k)} ${F(-R*.98*k)} ${F(R*1.15*k)} ${F(R*.05*k)} 0 ${F(R*.8*k)}Z"/>`).join('');
+    case 'Clarity':return`<polygon points="${poly(3,R)}"/><polygon points="${poly(3,R,90)}"/><circle r="${F(R*.5)}"/>`;
+    case 'Abundance':return`<polygon points="${poly(4,R,-90)}"/><polygon points="${poly(4,R,-45)}"/><circle r="${R}"/><circle r="${F(R*.707)}"/>`;
+    case 'Creativity':{let d='';for(let i=0;i<=120;i++){const t=i/120*3*360,r=R*Math.pow(.618,(3*360-t)/90/4),[x,y]=P2(t-90,r);d+=(i?'L':'M')+x+' '+y;}return`<path d="${d}"/><circle r="${R}"/>`;}
+    case 'Rest & recovery':return`<path d="M${F(R*.25)} ${F(-R*.92)}A${R} ${R} 0 1 0 ${F(R*.25)} ${F(R*.92)}A${F(R*.8)} ${F(R*.8)} 0 1 1 ${F(R*.25)} ${F(-R*.92)}Z"/>`+[[.62,-.55],[.78,-.12],[.55,.3]].map(([x,y])=>`<path d="M${F(R*x)} ${F(R*y-10)}V${F(R*y+10)}M${F(R*x-10)} ${F(R*y)}H${F(R*x+10)}"/>`).join('');
+    case 'Courage':return`<polygon points="${poly(3,R)}"/><polygon points="${poly(3,R*.6)}"/><path d="M0 ${F(-R)}V${F(R*.5)}"/>`;
+    case 'New beginnings':return`<path d="M${-R} ${F(R*.3)}H${R}M${F(-R*.75)} ${F(R*.3)}A${F(R*.75)} ${F(R*.75)} 0 0 1 ${F(R*.75)} ${F(R*.3)}"/>`+Array.from({length:7},(_,i)=>{const a=-180+i*30,[x1,y1]=P2(a,R*.88),[x2,y2]=P2(a,R*1.05);return`<path d="M${x1} ${F(y1+R*.3)}L${x2} ${F(y2+R*.3)}"/>`;}).join('');
+    case 'Letting go':return[.3,.5,.7,.9,1.1].map((k,i)=>`<circle r="${F(R*k)}" stroke-opacity="${F(.9-i*.16)}"/>`).join('');
+  }return'';}
 function chartSVG(){
   const r=rngFrom(S.seed+'|chart'),pals=crystalPalettes(),journal=S.style==='journal',Ro=455,Rb=418,Ri=392,Rz=352,Rt=300,Rp=262,Ra=222;
   const{c}=activeChart(),emph=emphasis(c),maxE=Math.max(1,...emph),asc0=c.Asc!=null?c.Asc:0,pal=auraPalette(c);
   // astrology convention: the Ascendant sits on the left and the signs run counter-clockwise
   const th=lon=>180+(lon-asc0),at=(lon,R)=>{const t=th(lon)*DEG;return[f2(Math.cos(t)*R),f2(-Math.sin(t)*R)];},rotOf=lon=>f2(90-th(lon));
-  const ink='#6b6182',gold=journal?ink:'#a8832f',white=journal?ink:'#c4a256',lit=new Set(litAreas()),ph=moonPhase();
-  const petalCol=k=>S.color!=='match'?mix(COLOR_SET[S.color][1],signPastel(k),.3):S.lens==='elements'?ELEMENT_COLOR[SIGNS[k][2]]:signPastel(k);
+  const night=!journal&&S.yin>62,ink='#6b6182',gold=journal?ink:night?'#ffe7a3':'#a8832f',white=journal?ink:night?'#f1e2b8':'#c4a256',glyphOn=night?'#fff7dc':'#6f5216',lit=new Set(litAreas()),ph=moonPhase();
+  const petalBase=k=>S.color!=='match'?mix(COLOR_SET[S.color][1],signPastel(k),.3):S.lens==='elements'?ELEMENT_COLOR[SIGNS[k][2]]:signPastel(k);
+  const eT=(S.element-50)/50,petalCol=k=>Math.abs(eT)<.06?petalBase(k):mix(petalBase(k),eT>0?'#ffa552':'#74aefc',Math.abs(eT)*.5);
   const core=pal.length?pal:[{hex:'#ffffff'}];
   let s=defs(pals)+`<defs><linearGradient id="shine" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".7" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity=".8"/></linearGradient>
     <radialGradient id="coreG"><stop offset="0" stop-color="#fff"/>${core.map((p,i)=>`<stop offset="${(.35+i*.3).toFixed(2)}" stop-color="${mix(p.hex,'#ffffff',.25)}"/>`).join('')}</radialGradient></defs>`;
@@ -711,6 +733,7 @@ function chartSVG(){
   s+=`<path d="${octD(Rb)}" fill="none" stroke="${white}" stroke-opacity=".85" stroke-width="2"/>`;
   for(let k=0;k<8;k++){const a=-67.5+k*45,[x1,y1]=P2(a,Ro),[x2,y2]=P2(a,Rb);s+=`<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${white}" stroke-opacity=".7" stroke-width="1.5"/>`;}
   const ap=(Ro+Rb)/2*OCT_A;
+  if(!journal)lit.forEach(k=>{if(k>7)return;const a=-90+k*45,R=(Ro+Rb)/2,[x1,y1]=P2(a-22.5,R),[x2,y2]=P2(a+22.5,R);const[w1x,w1y]=P2(a-20,Ri-6),[w2x,w2y]=P2(a+20,Ri-6),[w3x,w3y]=P2(a+9,Rt),[w4x,w4y]=P2(a-9,Rt);s+=`<path d="M${x1} ${y1}L${x2} ${y2}" stroke="#e2b548" stroke-width="32" stroke-opacity=".62" filter="url(#soft)"/><path d="M${w1x} ${w1y}L${w2x} ${w2y}L${w3x} ${w3y}L${w4x} ${w4y}Z" fill="#f0cf74" fill-opacity=".3"/>`;});
   TRIGRAMS.forEach((t,k)=>{const on=lit.has(k),col=on?(journal?'#b98a3c':'#8f6a1c'):white;let d='';t.forEach((solid,l)=>{const y=(l-1)*9;d+=solid?`M-30 ${y}H30`:`M-30 ${y}H-6M6 ${y}H30`;});
     s+=`<path d="${d}" stroke="${col}" stroke-width="4.5" stroke-linecap="round" transform="rotate(${k*45}) translate(0 ${-ap})"${on&&!journal?' filter="url(#soft)"':''}/>`;});
   s+=journal?`<path d="${octD(Ri)}" fill="none" stroke="${ink}" stroke-width="2"/>`:`<path d="${octD(Ri)}" fill="url(#nsky)" stroke="#d4b56a" stroke-width="1.6"/>`;
@@ -726,7 +749,7 @@ function chartSVG(){
   }else{
     SIGNS.forEach(([name,glyph,el],k)=>{const e=emph[k]/maxE;s+=`<path d="${band(k*30,k*30+30)}" fill="${journal?'none':petalCol(k)}" fill-opacity="${(.14+e*.4).toFixed(2)}" stroke="${white}" stroke-opacity=".4" stroke-width="1.2"/>`;
       const[x,y]=at(k*30+15,(Rz+Rt)/2),on=e>.34;
-      s+=`<text x="${x}" y="${f2(y+12)}" text-anchor="middle" font-size="${on?38:31}" font-family="'Apple Symbols','Segoe UI Symbol','Noto Sans Symbols 2','Noto Sans Symbols','DejaVu Sans',serif" fill="${journal?ink:on?'#6f5216':gold}"${journal||!on?'':' filter="url(#soft)"'}>${glyph}&#xFE0E;</text>`;});
+      s+=`<text x="${x}" y="${f2(y+12)}" text-anchor="middle" font-size="${on?38:31}" font-family="'Apple Symbols','Segoe UI Symbol','Noto Sans Symbols 2','Noto Sans Symbols','DejaVu Sans',serif" fill="${journal?ink:on?glyphOn:gold}"${journal||!on?'':' filter="url(#soft)"'}>${glyph}&#xFE0E;</text>`;});
   }
   for(let d=0;d<360;d+=5){const big=d%30===0,mid=d%10===0,[x1,y1]=at(d,Rt),[x2,y2]=at(d,Rt-(big?14:mid?9:5));s+=`<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${white}" stroke-opacity="${big?.7:.4}" stroke-width="${big?1.6:1}"/>`;}
   // Ascendant and Midheaven axes, when the birth time and place are known
@@ -736,10 +759,10 @@ function chartSVG(){
   const AC={sextile:'#a9e6d2',trine:'#a9e6d2',square:'#f6b0c2',opposition:'#f6b0c2'};
   aspectsOf(c).filter(a=>a.type!=='conjunction').forEach((a,i)=>{const[x1,y1]=at(c[a.a],Ra),[x2,y2]=at(c[a.b],Ra);s+=`<path class="asp" pathLength="1" style="--d:${(900+i*120)}ms" d="M${x1} ${y1}L${x2} ${y2}" stroke="${journal?ink:AC[a.type]}" stroke-width="${f2(2.6-a.orb*.22)}" stroke-opacity="${f2(.95-a.orb*.07)}" stroke-linecap="round"/>`;});
   // the aura bloom: one petal per sign, pointing at it, sized by how strongly your chart lights that sign
-  const Wf=.72+S.element/100*.56,curve=.45+(INT_KEYS.indexOf(S.intention)%5)*.07,haze=S.style==='aura'?' filter="url(#haze)"':'';
-  const petal=(L,w,fill,rot,d,op,cls='petal')=>{const p=`M0 0C${f2(-w*.55)} ${f2(-L*.22)} ${f2(-w*curve*1.1)} ${f2(-L*.72)} 0 ${f2(-L)}C${f2(w*curve*1.1)} ${f2(-L*.72)} ${f2(w*.55)} ${f2(-L*.22)} 0 0Z`;
+  const Wf=.55+S.element/100*.9,shape=INT_SHAPE[S.intention]||'lotus',curve=.5,haze=S.style==='aura'?' filter="url(#haze)"':'';
+  const petal=(L,w,fill,rot,d,op,cls='petal')=>{const p=petalPath(shape,L,w);
     return journal?`<g class="${cls}" style="--r:${rot}deg;--d:${d}ms" transform="rotate(${rot})"><path d="${p}" fill="none" stroke="${ink}" stroke-width="1.5"/></g>`
-      :`<g class="${cls}" style="--r:${rot}deg;--d:${d}ms" transform="rotate(${rot})" opacity="${op}"><path d="${p}" fill="${fill}"/><path d="${p}" fill="url(#shine)"/><path d="${p}" fill="url(#iri)" opacity=".16"/><path d="${p}" fill="none" stroke="#d2b770" stroke-width="1.1" stroke-opacity=".85"/></g>`;};
+      :`<g class="${cls}" style="--r:${rot}deg;--d:${d}ms" transform="rotate(${rot})" opacity="${op}"><path d="${p}" fill="${fill}"/><path d="${p}" fill="url(#shine)"/><path d="${p}" fill="url(#iri)" opacity=".16"/><path d="${p}" fill="none" stroke="#d2b770" stroke-width="${f2(.5+S.focus/55)}" stroke-opacity="${f2(.3+S.focus/150)}"/></g>`;};
   let b='';const order=emph.map((v,k)=>({v,k})).sort((x,y)=>x.v-y.v);
   // back ring: every sign gets a petal; your emphasized signs grow longer and brighter
   order.forEach(({k},i)=>{const e=emph[k]/maxE,L=128+78*e;b+=petal(L,(54+L*.26)*Wf,petalCol(k),rotOf(k*30+15),i*55,.82+e*.16);});
@@ -748,16 +771,38 @@ function chartSVG(){
   const extra=[[8,52,1],[6,40,2],[5,30,3]];for(let li=0;li<Math.max(0,S.depth-2);li++){const[n,L,o]=extra[li];for(let k=0;k<n;k++)b+=petal(L,L*.62*Wf,`url(#pl${(k+o)%pals.length})`,f2(k*360/n+li*17),1050+li*160+k*40,.95);}
   if(S.lens==='moon'){const mr=44;b+=`<g class="core"><circle r="${mr}" fill="${journal?'#fffdf8':'#4b4569'}" stroke="#fff" stroke-width="3"/><path d="${moonPath(mr,ph)}" fill="#fff8e1"/></g>`;}
   else b+=journal?`<g class="core"><circle r="34" fill="none" stroke="${ink}" stroke-width="1.6"/></g>`:`<g class="core"><circle r="40" fill="url(#coreG)" filter="url(#soft)"/><path d="${(()=>{let h='';for(let k=0;k<6;k++){const[x,y]=P2(-90+k*60,24);h+=(k?'L':'M')+x+' '+y;}return h+'Z';})()}" fill="url(#gem)" stroke="#fff" stroke-width="1.6" opacity=".9"/></g>`;
-  s+=`<g class="bloom" style="--breath:${(15-S.flow*.09).toFixed(1)}s"${haze}>${b}</g>`;
+  // --- each control gets its own visible layer ---
+  const dScale=f2(.66+S.depth*.11),blurSD=f2((100-S.focus)/6),fk=S.planet==='Rising'?'Asc':S.planet,fl=fk==='Asc'?c.Asc:c[fk];
+  if(!journal){
+    // Yin-Yang: sunlit rays on the yang side
+    if(S.yin<45){const amt=(45-S.yin)/45;s+=`<circle r="${Rt}" fill="#ffd36e" opacity="${f2(amt*.28)}" filter="url(#haze)"/>`;for(let k=0;k<36;k++){const[x1,y1]=P2(k*10,Ra-4),[x2,y2]=P2(k*10,Rt-6);s+=`<path d="M${x1} ${y1}L${x2} ${y2}" stroke="#d9a83c" stroke-width="${k%2?1.2:2.4}" stroke-opacity="${f2(.15+amt*.5)}"/>`;}}
+    // Intention: its sacred geometry behind the flower
+    s+=`<g fill="none" stroke="${gold}" stroke-width="1.6" stroke-opacity=".55" stroke-linejoin="round">${intentionGeo(S.intention,250)}</g>`;
+    // Energy flow: spiral currents that turn faster as flow rises
+    const nf=Math.round(S.flow/25);if(nf){let g='';for(let k=0;k<nf;k++){let d='';for(let i=0;i<=40;i++){const tt=i/40,[x,y]=P2(k*360/nf+tt*170,40+tt*250);d+=(i?'L':'M')+x+' '+y;}g+=`<path d="${d}" stroke="${mix(core[k%core.length].hex,'#b8963e',.35)}" stroke-width="${f2(2+S.flow/28)}" stroke-opacity="${f2(.35+S.flow/180)}" fill="none" stroke-linecap="round"/>`;}s+=`<g class="lotus">${g}</g>`;}
+    // Planet chip: its sign glows and a beam of its light reaches it
+    if(fl!=null){const sg=signOf(fl),[bx,by]=at(fl,Rp-28),pc=PCOLOR[fk==='Asc'?'Sun':fk];s+=`<path d="${band(sg*30,sg*30+30)}" fill="#efcf73" fill-opacity=".42" stroke="${gold}" stroke-width="2"/><defs><linearGradient id="beamG" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${bx}" y2="${by}"><stop offset="0" stop-color="${pc}" stop-opacity="0"/><stop offset=".5" stop-color="${pc}" stop-opacity=".55"/><stop offset="1" stop-color="${pc}" stop-opacity="1"/></linearGradient></defs><path d="M0 0L${bx} ${by}" stroke="url(#beamG)" stroke-width="7" stroke-linecap="round" filter="url(#soft)"/>`;}
+  }
+  // Focus: soft and dreamy when low, crisp when high. Ritual depth: the flower grows
+  const fb=!journal&&blurSD>.4;if(fb)s+=`<defs><filter id="fblur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${blurSD}"/></filter></defs>`;
+  s+=`<g${fb?' filter="url(#fblur)"':''} opacity="${f2(.62+S.focus/265)}"><g transform="scale(${dScale})"><g class="bloom" style="--breath:${(15-S.flow*.09).toFixed(1)}s"${haze}>${b}</g></g></g>`;
+  if(!journal){
+    // Ritual depth: one mandala ring per level
+    for(let k=0;k<S.depth;k++)s+=`<circle r="${f2((64+k*36)*dScale)}" fill="none" stroke="${gold}" stroke-opacity="${f2(.9-k*.08)}" stroke-width="2.4" stroke-dasharray="2 ${6+k*2}" stroke-linecap="round"/>`;
+    // Crystals: each chosen crystal orbits the flower
+    if(S.crystals.length){const n=S.crystals.length;let g='';S.crystals.forEach((k,i)=>{const cc=CRYSTALS[k].c,a=i*360/n-90,[x,y]=P2(a,240);g+=`<defs><linearGradient id="cg${i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${cc[0]}"/><stop offset=".5" stop-color="${cc[1]}"/><stop offset="1" stop-color="${cc[2]}"/></linearGradient></defs><g transform="translate(${x} ${y}) rotate(${f2(a+90)})"><path d="M0-30L13-12V14L0 30-13 14V-12Z" fill="url(#cg${i})" stroke="${gold}" stroke-width="1.4"/><path d="M0-30V30M-13-12L0-3 13-12M-13 14L0 7 13 14" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width=".9"/></g>`;});s+=`<g class="lotus" style="animation-direction:reverse">${g}</g>`;}
+    // Energies to invite: motes of their colour drift inward
+    S.invite.forEach(k=>{for(let i=0;i<8;i++){const a=r()*360,[x,y]=P2(a,300+r()*50);s+=`<circle class="drift" style="--dx:${f2(-x*.8)}px;--dy:${f2(-y*.8)}px;--d:${(r()*6).toFixed(2)}s" cx="${x}" cy="${y}" r="${f2(4+r()*3.5)}" fill="${INVITE[k].c}" stroke="#fff" stroke-width="1"/>`;}});
+  }
   // energies you are releasing drift gently away from the bloom
-  if(!journal)S.release.forEach((rel,ri)=>{for(let i=0;i<5;i++){const a=r()*360,[x,y]=P2(a,150+r()*30),[dx,dy]=P2(a,110+r()*60);s+=`<circle class="drift" style="--dx:${dx}px;--dy:${dy}px;--d:${(r()*6).toFixed(2)}s" cx="${x}" cy="${y}" r="${f2(2.5+r()*2.5)}" fill="#f6b8cb"/>`;}});
+  if(!journal)S.release.forEach((rel,ri)=>{for(let i=0;i<8;i++){const a=r()*360,[x,y]=P2(a,150+r()*30),[dx,dy]=P2(a,140+r()*120);s+=`<circle class="drift" style="--dx:${dx}px;--dy:${dy}px;--d:${(r()*6).toFixed(2)}s" cx="${x}" cy="${y}" r="${f2(3+r()*3)}" fill="#b7a9c6" stroke="#fff" stroke-width=".8"/>`;}});
   // the planets, placed at their real longitudes
   const pos=PLIST.map(n=>({n,lon:c[n],disp:c[n]})).sort((a,b)=>a.lon-b.lon);
   for(let pass=0;pass<8;pass++)for(let i=0;i<pos.length;i++){const a=pos[i],nb=pos[(i+1)%pos.length];let gap=norm360(nb.disp-a.disp);if(pos.length>1&&gap<11){a.disp-=(11-gap)/2;nb.disp+=(11-gap)/2;}}
   const focus=S.planet==='Rising'?'Asc':S.planet;
   pos.forEach((p,i)=>{const[dx,dy]=at(p.lon,Rt-4),[gx,gy]=at(p.disp,Rp),on=p.n===focus,col=journal?ink:PCOLOR[p.n];
-    s+=`<g class="pl" style="--d:${500+i*90}ms"><circle cx="${dx}" cy="${dy}" r="4.5" fill="${col}" stroke="#fff" stroke-width="1.5"/>${on&&!journal?`<circle cx="${gx}" cy="${gy}" r="25" fill="#fff" fill-opacity=".18" stroke="#c9a95a" stroke-width="2" filter="url(#soft)"/>`:''}<text x="${gx}" y="${f2(gy+10)}" text-anchor="middle" font-size="${on?31:27}" font-family="'Apple Symbols','Segoe UI Symbol','Noto Sans Symbols 2','DejaVu Sans',serif" fill="${col}" stroke="#fff" stroke-width="${journal?0:3}" paint-order="stroke">${PLANETS[p.n].g}&#xFE0E;</text></g>`;});
-  const ns=journal?0:5+Math.round(S.focus/10);for(let i=0;i<ns;i++){const[x,y]=P2(r()*360,120+r()*340),sz=6+r()*9;s+=`<path class="twinkle" style="animation-delay:${(r()*3).toFixed(2)}s" d="M${x} ${f2(y-sz)}Q${x} ${y} ${f2(x+sz)} ${y}Q${x} ${y} ${x} ${f2(y+sz)}Q${x} ${y} ${f2(x-sz)} ${y}Q${x} ${y} ${x} ${f2(y-sz)}Z" fill="${i%3?'#e3cd92':'#c9a95a'}"/>`;}
+    s+=`<g class="pl" style="--d:${500+i*90}ms"><circle cx="${dx}" cy="${dy}" r="4.5" fill="${col}" stroke="#fff" stroke-width="1.5"/>${on&&!journal?`<circle cx="${gx}" cy="${gy}" r="34" fill="#fff" fill-opacity=".22" stroke="#c9a95a" stroke-width="3" filter="url(#soft)"/>`:''}<text x="${gx}" y="${f2(gy+10)}" text-anchor="middle" font-size="${on?31:27}" font-family="'Apple Symbols','Segoe UI Symbol','Noto Sans Symbols 2','DejaVu Sans',serif" fill="${col}" stroke="#fff" stroke-width="${journal?0:3}" paint-order="stroke">${PLANETS[p.n].g}&#xFE0E;</text></g>`;});
+  const ns=journal?0:Math.round(2+Math.max(0,S.yin-35)/65*30);for(let i=0;i<ns;i++){const[x,y]=P2(r()*360,120+r()*340),sz=6+r()*9;s+=`<path class="twinkle" style="animation-delay:${(r()*3).toFixed(2)}s" d="M${x} ${f2(y-sz)}Q${x} ${y} ${f2(x+sz)} ${y}Q${x} ${y} ${x} ${f2(y+sz)}Q${x} ${y} ${f2(x-sz)} ${y}Q${x} ${y} ${x} ${f2(y-sz)}Z" fill="${night?(i%3?'#ffffff':'#ffe7a8'):(i%3?'#e3cd92':'#c9a95a')}"/>`;}
   return s;
 }
 
