@@ -1067,7 +1067,7 @@ fillForm();
 
 // ---------- Google AdSense: switched off until a publisher ID is filled in (after AdSense approves the site) ----------
 // client: your "ca-pub-…" ID. slots: the numeric ad unit IDs from AdSense for each placement. Leave a slot blank to keep it empty.
-const ADSENSE={client:'ca-pub-7008243458158352',slots:{adCenter:'',adRight:''}};
+const ADSENSE={client:'ca-pub-7008243458158352',slots:{adCenter:'5393501207',adRight:'3668908881'}};
 (function(){if(!/^ca-pub-\d{10,20}$/.test(ADSENSE.client)||window.claude||location.protocol!=='https:')return;
   if(!document.querySelector('script[src*="adsbygoogle.js"]')){const sc=document.createElement('script');sc.async=true;sc.crossOrigin='anonymous';sc.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADSENSE.client;document.head.appendChild(sc);}
   Object.entries(ADSENSE.slots).forEach(([id,slot])=>{const box=document.getElementById(id);if(!box||!/^\d{6,}$/.test(slot))return;const ins=document.createElement('ins');ins.className='adsbygoogle';ins.style.display='block';
