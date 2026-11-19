@@ -161,6 +161,43 @@ details.more summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top
 .bal{display:grid;grid-template-columns:64px 1fr 44px;align-items:center;gap:8px;font-size:14px;margin:4px 0}.bal i{height:10px;border-radius:5px;background:rgba(160,148,185,.2);overflow:hidden}.bal b{display:block;height:100%;border-radius:5px}.bal em{font-style:normal;color:var(--muted);font-variant-numeric:tabular-nums}
 .pt{width:100%;border-collapse:collapse;font-size:14px}.pt td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}.pt td:first-child{font-size:20px;width:28px;font-family:'Apple Symbols','Segoe UI Symbol','Noto Sans Symbols 2',serif}
 .asl{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+/* ---- Google Material 3 form controls: outlined text fields, menus, checkbox and buttons ---- */
+:root{--md-primary:#4b8748;--md-on-surface:#1d1b20;--md-on-variant:#49454f;--md-outline:#79747e;--md-error:#b3261e}
+.mf{position:relative;margin:18px 0 0}
+.mf>input,.mf>select,.mf>textarea{display:block;width:100%;min-height:56px;margin:0;padding:15px 15px;border:1px solid var(--md-outline);border-radius:4px;background:#fff;color:var(--md-on-surface);font:400 16px/24px var(--body);outline:none;appearance:none;-webkit-appearance:none;transition:border-color .15s,box-shadow .15s}
+.mf>input::placeholder,.mf>textarea::placeholder{color:transparent}
+.mf>input:hover,.mf>select:hover,.mf>textarea:hover{border-color:var(--md-on-surface)}
+.mf>input:focus,.mf>select:focus,.mf>textarea:focus{border-color:var(--md-primary);box-shadow:inset 0 0 0 1px var(--md-primary)}
+.mf>select{padding-right:48px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%2349454f'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.mf>textarea{min-height:120px;resize:vertical;padding-top:16px}
+.mf>input[type=date],.mf>input[type=time]{min-height:56px;line-height:24px}
+.mf>input:disabled{color:rgba(29,27,32,.38);border-color:rgba(29,27,32,.12);background:#fafafa}
+.mf>input:disabled~label{color:rgba(29,27,32,.38)}
+.mf>label{position:absolute;left:11px;top:16px;padding:0 4px;max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#fff;color:var(--md-on-variant);font:400 16px/24px var(--body);pointer-events:none;transform-origin:left top;transition:top .15s,transform .15s,color .15s}
+.mf>input:focus~label,.mf>input:not(:placeholder-shown)~label,.mf>textarea:focus~label,.mf>textarea:not(:placeholder-shown)~label,.mf>select~label,.mf.float>label{top:-10px;transform:scale(.75)}
+.mf>input:focus~label,.mf>select:focus~label,.mf>textarea:focus~label{color:var(--md-primary)}
+.mhelp{margin:4px 16px 0;font:400 12px/16px var(--body);color:var(--md-on-variant);min-height:16px}
+.mf.err>input,.mf.err>select{border-color:var(--md-error);box-shadow:inset 0 0 0 1px var(--md-error)}
+.mf.err>label,.mf.err>.mhelp{color:var(--md-error)}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.menu{position:absolute;left:0;right:0;top:58px;z-index:20;margin:0;padding:8px 0;list-style:none;background:#fff;border-radius:4px;box-shadow:0 2px 6px 2px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.3);max-height:264px;overflow-y:auto}
+.menu li{min-height:48px;display:flex;flex-direction:column;justify-content:center;padding:0 16px;font:400 16px/24px var(--body);color:var(--md-on-surface);cursor:pointer}
+.menu li small{font-size:12px;line-height:16px;color:var(--md-on-variant)}
+.menu li:hover{background:rgba(29,27,32,.08)}.menu li[aria-selected=true]{background:rgba(75,135,72,.14)}
+.menu .none{color:var(--md-on-variant);cursor:default}.menu .none:hover{background:none}
+.mcheck{display:flex;align-items:center;gap:12px;margin:10px 0 0 2px;font:400 14px/20px var(--body);color:var(--md-on-surface);cursor:pointer;width:max-content}
+.mcheck input{appearance:none;-webkit-appearance:none;width:18px;height:18px;margin:0;border:2px solid var(--md-on-variant);border-radius:2px;display:grid;place-items:center;cursor:pointer;flex:none}
+.mcheck input:checked{background:var(--md-primary);border-color:var(--md-primary)}
+.mcheck input:checked::after{content:"";width:9px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.mcheck input:focus-visible{outline:2px solid var(--md-primary);outline-offset:3px}
+.mbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 24px;border-radius:20px;font:500 14px/20px var(--body);letter-spacing:.1px;border:0;cursor:pointer;transition:box-shadow .15s,background .15s}
+.mbtn.filled{background:var(--md-primary);color:#fff}.mbtn.filled:hover{box-shadow:0 1px 2px rgba(0,0,0,.3),0 1px 3px 1px rgba(0,0,0,.15);background:#437c40}
+.mbtn.outlined{background:transparent;color:var(--md-primary);border:1px solid var(--md-outline)}.mbtn.outlined:hover{background:rgba(75,135,72,.08)}
+.mbtn.text{background:transparent;color:var(--md-primary);padding:0 12px}.mbtn.text:hover{background:rgba(75,135,72,.08)}
+.mbtn:focus-visible{outline:2px solid var(--md-primary);outline-offset:2px}
+.mactions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+details.mx{margin-top:8px}details.mx summary{cursor:pointer;font:500 14px/20px var(--body);color:var(--md-primary);padding:8px 0;width:max-content}
+.mcopy{display:flex;gap:8px;align-items:flex-start}.mcopy .mf{flex:1}.mcopy .mbtn{margin-top:26px}
 @media (max-width:1100px){main{grid-template-columns:320px 1fr 290px;gap:14px}.brand{font-size:28px}}
 @media (max-width:920px){
   html,body{height:auto}
@@ -193,7 +230,7 @@ details.more summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top
 <main>
   <aside class="panel show" id="left">
     <div class="sec"><h2>Astrology</h2><div class="chips" id="planets"></div></div>
-    <div class="sec"><h2>Intention</h2><select id="intention" aria-label="Intention"></select></div>
+    <div class="sec"><h2>Intention</h2><div class="mf"><select id="intention"></select><label for="intention">Today’s intention</label></div></div>
     <div class="sec"><h2>Crystal support</h2><div class="chips" id="crystals"></div></div>
     <div class="sec"><h2>Emotional frequency</h2>
       <div class="sub">Energies to invite</div><div class="chips" id="invite"></div>
@@ -232,16 +269,23 @@ details.more summary{cursor:pointer;color:var(--muted);font-size:13px;margin-top
   <aside class="panel" id="right">
     <div class="sec" style="text-align:center"><h2 style="justify-content:center">Look &amp; feel</h2><div class="sub" style="margin-top:-4px">How your checklist is expressed</div></div>
     <div class="sec"><div class="styles" id="styles"></div></div>
-    <div class="sec"><h2>Astrology lens</h2><select id="lens" aria-label="Astrology lens"></select>
+    <div class="sec"><h2>Astrology lens</h2><div class="mf"><select id="lens"></select><label for="lens">Show on the wheel</label></div>
 </div>
     <div class="sec"><h2>Your birth chart</h2>
-      <label class="sub" for="bdate">Birth date</label><input type="date" id="bdate" class="field bf">
-      <label class="sub" for="btime">Birth time <span class="hint">(for your Rising sign)</span></label><input type="time" id="btime" class="field bf">
-      <label class="sub" for="bplace">Birth place</label><input id="bplace" class="field bf" list="cityList" placeholder="Start typing a city" autocomplete="off"><datalist id="cityList"></datalist>
-      <details class="more"><summary>Place not listed?</summary><div class="row" style="margin-top:6px"><input id="blat" class="field bf" placeholder="Latitude, e.g. 34.05" inputmode="decimal" style="flex:1"><input id="blon" class="field bf" placeholder="Longitude, e.g. -118.24" inputmode="decimal" style="flex:1"></div><select id="btz" class="field bf" style="margin-top:6px" aria-label="Time zone"></select></details>
-      <div class="row" style="margin-top:10px"><button class="pill sage" id="readChart">Read my chart</button><button class="pill" id="clearChart">Clear</button></div>
-      <div class="sub" style="font-size:12.5px">Your birth details stay on this device and are never shared, not even in share links.</div></div>
-    <div class="sec"><h2>Color</h2><select id="color" aria-label="Color"></select></div>
+      <form id="birthForm" novalidate autocomplete="off">
+        <div class="mf float" id="f-date"><input type="date" id="bdate" min="1800-01-01" max="2050-12-31" required aria-describedby="h-date"><label for="bdate">Birth date</label><div class="mhelp" id="h-date">Required</div></div>
+        <div class="mf float" id="f-time"><input type="time" id="btime" aria-describedby="h-time"><label for="btime">Birth time</label><div class="mhelp" id="h-time">Needed for your Rising sign. A birth certificate usually has it.</div></div>
+        <label class="mcheck"><input type="checkbox" id="bnotime">I don’t know my birth time</label>
+        <div class="mf" id="f-place"><input id="bplace" placeholder=" " role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="placeMenu" aria-describedby="h-place" spellcheck="false"><label for="bplace">Birth city</label><ul class="menu" id="placeMenu" role="listbox" aria-label="Cities" hidden></ul><div class="mhelp" id="h-place">Start typing, then choose from the list</div></div>
+        <details class="mx" id="customPlace"><summary>My city isn’t listed</summary>
+          <div class="mrow"><div class="mf" id="f-lat"><input id="blat" placeholder=" " inputmode="decimal" aria-describedby="h-lat"><label for="blat">Latitude</label><div class="mhelp" id="h-lat">e.g. 34.05</div></div>
+          <div class="mf" id="f-lon"><input id="blon" placeholder=" " inputmode="decimal" aria-describedby="h-lon"><label for="blon">Longitude</label><div class="mhelp" id="h-lon">e.g. -118.24</div></div></div>
+          <div class="mf" id="f-tz"><select id="btz" aria-describedby="h-tz"></select><label for="btz">Time zone</label><div class="mhelp" id="h-tz">The zone where you were born</div></div>
+        </details>
+        <div class="mactions"><button type="button" class="mbtn text" id="clearChart">Clear</button><button type="submit" class="mbtn filled" id="readChart">Read my chart</button></div>
+        <div class="mhelp" style="margin:12px 0 0">Your birth details stay on this device and are never shared, not even in share links.</div>
+      </form></div>
+    <div class="sec"><h2>Color</h2><div class="mf"><select id="color"></select><label for="color">Color palette</label></div></div>
     <div class="sec"><h2>Today’s sky</h2><div class="sky" id="sky"></div></div>
     <p class="note"><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">Privacy</a> · For reflection and fun. Astrology, crystal lore and feng shui are traditions, not science, and nothing here is medical or mental-health advice. If you are struggling, please reach out to someone you trust or a professional.</p>
   </aside>
@@ -823,8 +867,8 @@ function streak(log){let n=0;const d=new Date();for(;;){const k=todayKey(d);if(l
 $('#checkin').onclick=()=>{const log=store.get('checkins',[]),today=log.find(e=>e.date===todayKey());let mood=today?today.mood:null;
   const last7=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);const e=log.find(x=>x.date===todayKey(d));return e?MOODS[e.mood][1]:null;});
   showModal(head('Check in','How are you arriving today?')+`<div class="moods">${MOODS.map(([m,c],i)=>`<button class="mood${mood===i?' on':''}" data-m="${i}"><i style="background:${c}"></i>${m}</button>`).join('')}</div>
-  <label class="sub" for="cinote">A word or two, if you like</label><textarea class="field" id="cinote" style="min-height:80px">${esc(today?today.note:'')}</textarea>
-  <div class="row" style="justify-content:space-between;margin-top:12px"><div><div class="sub" style="margin:0">Last 7 days · streak ${streak(log)} ${streak(log)===1?'day':'days'}</div><div class="dots">${last7.map(c=>`<span style="${c?'background:'+c:''}"></span>`).join('')}</div></div><button class="pill sage" id="cisave">Save check-in</button></div>`);
+  <div class="mf"><textarea id="cinote" placeholder=" " maxlength="500" style="min-height:96px">${esc(today?today.note:'')}</textarea><label for="cinote">A word or two (optional)</label><div class="mhelp">Stays on this device</div></div>
+  <div class="row" style="justify-content:space-between;margin-top:12px"><div><div class="sub" style="margin:0">Last 7 days · streak ${streak(log)} ${streak(log)===1?'day':'days'}</div><div class="dots">${last7.map(c=>`<span style="${c?'background:'+c:''}"></span>`).join('')}</div></div><button class="mbtn filled" id="cisave">Save check-in</button></div>`);
   document.querySelectorAll('.mood').forEach(b=>b.onclick=()=>{mood=+b.dataset.m;document.querySelectorAll('.mood').forEach(x=>x.classList.toggle('on',x===b));});
   $('#cisave').onclick=()=>{if(mood==null){toast('Pick how you feel first.');return;}const L=store.get('checkins',[]).filter(e=>e.date!==todayKey());L.push({date:todayKey(),mood,note:$('#cinote').value.slice(0,500)});store.set('checkins',L.slice(-400));closeModal();toast(`Checked in. ${streak(L)>1?streak(L)+'-day streak.':'Welcome.'}`);};};
 
@@ -840,9 +884,9 @@ $('#breathClose').onclick=stopBreath;
 
 // Reflect: a prompt from today's choices, saved to a private journal on this device
 $('#reflect').onclick=()=>{const rel=S.release[0];const prompt=INTENTIONS[S.intention].q+(rel?' '+RELEASE[rel].q:'');const j=store.get('journal',[]);
-  showModal(head('Reflect',esc(prompt))+`<textarea class="field" id="jtext" placeholder="Write freely. This stays on this device."></textarea><div class="row" style="justify-content:flex-end;margin-top:10px"><button class="pill sage" id="jsave">Save reflection</button></div>
+  showModal(head('Reflect',esc(prompt))+`<div class="mf" id="f-j"><textarea id="jtext" placeholder=" " maxlength="4000"></textarea><label for="jtext">Your reflection</label><div class="mhelp">Write freely. This stays on this device.</div></div><div class="mactions"><button class="mbtn text" data-close>Cancel</button><button class="mbtn filled" id="jsave">Save reflection</button></div>
   ${j.length?`<div class="sub" style="margin-top:14px">Recent reflections</div><div class="list">${j.slice(-5).reverse().map(e=>`<div class="it"><b>${esc(e.date)}</b> · ${esc(e.text.slice(0,140))}${e.text.length>140?'…':''}</div>`).join('')}</div>`:''}`);
-  $('#jsave').onclick=()=>{const t=$('#jtext').value.trim();if(!t){toast('Write a line or two first.');return;}const J=store.get('journal',[]);J.push({date:todayKey(),prompt,text:t.slice(0,4000)});store.set('journal',J.slice(-300));markDone('reflect');closeModal();toast('Reflection saved.');};};
+  $('#jsave').onclick=()=>{const t=$('#jtext').value.trim();if(!t){$('#f-j').classList.add('err');$('#f-j .mhelp').textContent='Write a line or two first';$('#jtext').focus();return;}const J=store.get('journal',[]);J.push({date:todayKey(),prompt,text:t.slice(0,4000)});store.set('journal',J.slice(-300));markDone('reflect');closeModal();toast('Reflection saved.');};};
 
 // Save checklist: keep a copy on this device
 function checklistText(){const list=checklist(),done=store.get(doneKey(),{});return`The Vibes Checklist · ${new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}\nToday’s Alignment: ${$('#keywords').textContent}\n\n${list.map(it=>`${done[it.id]?'[x]':'[ ]'} ${it.t}`).join('\n')}\n\nVibe code: ${encode(S)}\n`;}
@@ -851,14 +895,41 @@ $('#save').onclick=()=>{const saved=store.get('saved',[]),list=checklist(),done=
   document.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>{const s=decode(b.dataset.load);if(s){commit(()=>{S=s;});closeModal();}});};
 
 // ---------- birth details form ----------
-$('#cityList').innerHTML=CITIES.map(c=>`<option value="${esc(c.name)}">`).join('');
-{const zones=(Intl.supportedValuesOf?Intl.supportedValuesOf('timeZone'):[...new Set(CITIES.map(c=>c.tz))]);$('#btz').innerHTML='<option value="">Time zone…</option>'+zones.map(z=>`<option>${esc(z)}</option>`).join('');}
-function fillForm(){const p=profile||{};$('#bdate').value=p.date||'';$('#btime').value=p.time||'';const pl=p.place;$('#bplace').value=pl&&!pl.custom?pl.name:'';$('#blat').value=pl&&pl.custom?pl.lat:'';$('#blon').value=pl&&pl.custom?pl.lon:'';$('#btz').value=pl&&pl.custom?pl.tz:'';}
-function formPlace(){const name=$('#bplace').value.trim(),city=CITIES.find(c=>c.name.toLowerCase()===name.toLowerCase());if(city)return{...city};
-  const lat=parseFloat($('#blat').value),lon=parseFloat($('#blon').value),tz=$('#btz').value;if(Number.isFinite(lat)&&Number.isFinite(lon)&&Math.abs(lat)<=90&&Math.abs(lon)<=180&&tz)return{name:name||`${lat.toFixed(2)}, ${lon.toFixed(2)}`,lat,lon,tz,custom:true};return null;}
-$('#readChart').onclick=()=>{const date=$('#bdate').value;if(!date){toast('Add your birth date first.');return;}const y=+date.slice(0,4);if(y<1800||y>2050){toast('Birth dates from 1800 to 2050 are supported.');return;}
-  const place=formPlace(),time=$('#btime').value;if($('#bplace').value.trim()&&!place){toast('Pick a city from the list, or use “Place not listed?”');return;}
-  profile={date,time,place};store.set('profile',profile);pushHist();S.lens='birth';render();bloom();openReading();};
+{const zones=(Intl.supportedValuesOf?Intl.supportedValuesOf('timeZone'):[...new Set(CITIES.map(c=>c.tz))]);$('#btz').innerHTML='<option value="" disabled selected hidden></option>'+zones.map(z=>`<option>${esc(z)}</option>`).join('');}
+// city search: a Material-style autocomplete menu with full keyboard support
+let pickedCity=null,menuIdx=-1;
+const placeIn=$('#bplace'),placeMenu=$('#placeMenu');
+function cityMatches(q){q=q.trim().toLowerCase();if(!q)return[];const starts=CITIES.filter(c=>c.name.toLowerCase().startsWith(q)),inside=CITIES.filter(c=>!c.name.toLowerCase().startsWith(q)&&c.name.toLowerCase().includes(q));return starts.concat(inside).slice(0,8);}
+function openMenu(list){menuIdx=-1;placeMenu.innerHTML=list.length?list.map((c,i)=>{const[city,...rest]=c.name.split(', ');return`<li role="option" id="opt${i}" data-i="${CITIES.indexOf(c)}" aria-selected="false">${esc(city)}<small>${esc(rest.join(', ')||c.tz)}</small></li>`;}).join(''):'<li class="none" role="option" aria-disabled="true">No match. Try “My city isn’t listed”.</li>';placeMenu.hidden=false;placeIn.setAttribute('aria-expanded','true');}
+function closeMenu(){placeMenu.hidden=true;placeIn.setAttribute('aria-expanded','false');placeIn.removeAttribute('aria-activedescendant');}
+function pickCity(i){pickedCity=CITIES[i];placeIn.value=pickedCity.name;closeMenu();setErr('place','');}
+function moveMenu(d){const items=[...placeMenu.querySelectorAll('li[data-i]')];if(!items.length)return;menuIdx=(menuIdx+d+items.length)%items.length;items.forEach((li,i)=>li.setAttribute('aria-selected',i===menuIdx));placeIn.setAttribute('aria-activedescendant',items[menuIdx].id);items[menuIdx].scrollIntoView({block:'nearest'});}
+placeIn.addEventListener('input',()=>{pickedCity=null;setErr('place','');const q=placeIn.value;if(q.trim())openMenu(cityMatches(q));else closeMenu();});
+placeIn.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();if(placeMenu.hidden)openMenu(cityMatches(placeIn.value));moveMenu(1);}else if(e.key==='ArrowUp'){e.preventDefault();moveMenu(-1);}
+  else if(e.key==='Enter'&&!placeMenu.hidden){const li=placeMenu.querySelectorAll('li[data-i]')[Math.max(0,menuIdx)];if(li){e.preventDefault();pickCity(+li.dataset.i);}}else if(e.key==='Escape'&&!placeMenu.hidden){e.stopPropagation();closeMenu();}});
+placeMenu.addEventListener('mousedown',e=>{const li=e.target.closest('li[data-i]');if(li){e.preventDefault();pickCity(+li.dataset.i);}});
+placeIn.addEventListener('blur',()=>setTimeout(closeMenu,120));
+// inline validation, Material style: the field turns red and the helper text explains
+const HELP={date:'Required',time:'Needed for your Rising sign. A birth certificate usually has it.',place:'Start typing, then choose from the list',lat:'e.g. 34.05',lon:'e.g. -118.24',tz:'The zone where you were born'};
+function setErr(k,msg){const f=$('#f-'+k);if(!f)return;f.classList.toggle('err',!!msg);f.querySelector('.mhelp').textContent=msg||HELP[k];const inp=f.querySelector('input,select');if(inp)inp.setAttribute('aria-invalid',msg?'true':'false');}
+$('#bnotime').addEventListener('change',e=>{$('#btime').disabled=e.target.checked;if(e.target.checked){$('#btime').value='';setErr('time','');$('#h-time').textContent='No problem. Your Sun, Moon and planets still work; Rising needs a time.';}else setErr('time','');});
+['bdate','btime','blat','blon','btz'].forEach(id=>$('#'+id).addEventListener('input',()=>setErr(id.slice(1)==='date'?'date':id==='btime'?'time':id.slice(1),'')));
+function fillForm(){const p=profile||{},pl=p.place;$('#bdate').value=p.date||'';$('#btime').value=p.time||'';$('#bnotime').checked=!!(p.date&&!p.time);$('#btime').disabled=$('#bnotime').checked;
+  pickedCity=pl&&!pl.custom?CITIES.find(c=>c.name===pl.name)||null:null;placeIn.value=pickedCity?pickedCity.name:'';
+  $('#blat').value=pl&&pl.custom?pl.lat:'';$('#blon').value=pl&&pl.custom?pl.lon:'';$('#btz').value=pl&&pl.custom?pl.tz:'';$('#customPlace').open=!!(pl&&pl.custom);['date','time','place','lat','lon','tz'].forEach(k=>setErr(k,''));if($('#bnotime').checked)$('#h-time').textContent='No problem. Your Sun, Moon and planets still work; Rising needs a time.';}
+$('#birthForm').addEventListener('submit',e=>{e.preventDefault();let first=null;['date','place','lat','lon','tz'].forEach(k=>setErr(k,''));if(!$('#bnotime').checked)setErr('time','');const bad=(k,msg)=>{setErr(k,msg);if(!first)first=k;};
+  const date=$('#bdate').value,y=+date.slice(0,4);if(!date)bad('date','Enter your birth date');else if(y<1800||y>2050)bad('date','Choose a date between 1800 and 2050');else setErr('date','');
+  const notime=$('#bnotime').checked,time=notime?'':$('#btime').value;if(!notime&&!time)bad('time','Enter a time, or tick “I don’t know my birth time”');
+  let place=null;const typed=placeIn.value.trim(),useCustom=$('#customPlace').open&&($('#blat').value||$('#blon').value||$('#btz').value);
+  if(!pickedCity&&typed){const exact=CITIES.find(c=>c.name.toLowerCase()===typed.toLowerCase());if(exact)pickedCity=exact;}
+  if(pickedCity)place={...pickedCity};
+  else if(useCustom){const lat=parseFloat($('#blat').value),lon=parseFloat($('#blon').value),tz=$('#btz').value;
+    if(!(Number.isFinite(lat)&&Math.abs(lat)<=90))bad('lat','Enter a latitude from -90 to 90');if(!(Number.isFinite(lon)&&Math.abs(lon)<=180))bad('lon','Enter a longitude from -180 to 180');if(!tz)bad('tz','Choose a time zone');
+    if(!first)place={name:typed||`${lat.toFixed(2)}, ${lon.toFixed(2)}`,lat,lon,tz,custom:true};}
+  else if(typed)bad('place','Choose a city from the list, or use “My city isn’t listed”');
+  else if(time)bad('place','Add your birth city so the time can be placed in its time zone');
+  if(first){const f=$('#f-'+first),inp=f&&f.querySelector('input,select');if(inp&&!inp.disabled)inp.focus();return;}
+  profile={date,time,place};store.set('profile',profile);pushHist();S.lens='birth';render();bloom();openReading();});
 $('#clearChart').onclick=()=>{profile=null;natalKey='';store.set('profile',null);try{localStorage.removeItem('vc_birth');}catch(e){}fillForm();render();bloom();toast('Birth details cleared from this device.');};
 fillForm();
 
@@ -889,8 +960,8 @@ $('#share').onclick=()=>{const link=siteLink(),code=encode(S),text=`My vibe toda
   ${NETS.length?`<div class="row" style="margin-top:12px">${NETS.map(([n,h])=>`<a class="pill" href="${esc(h)}" target="_blank" rel="noopener" style="text-decoration:none">${n}</a>`).join('')}</div>`:''}
   <div class="row" style="margin-top:12px"><button class="pill rose" id="scsave">Save image</button>${typeof navigator.share==='function'?'<button class="pill sage" id="scnative">Share…</button>':''}</div>
   <div class="sub">Instagram and TikTok: save the image and post it from the app.</div>
-  ${link?`<label class="sub" for="slink">Link</label><div class="row"><input class="field" id="slink" readonly style="flex:1;font:600 14px var(--body)"><button class="pill" data-copy="slink">Copy</button></div>`:''}
-  <label class="sub" for="scode">Vibe code</label><div class="row"><input class="field" id="scode" readonly style="flex:1;font:600 14px var(--body)"><button class="pill" data-copy="scode">Copy</button></div>`);
+  ${link?`<div class="mcopy"><div class="mf"><input id="slink" readonly placeholder=" "><label for="slink">Link</label></div><button class="mbtn outlined" data-copy="slink">Copy</button></div>`:''}
+  <div class="mcopy"><div class="mf"><input id="scode" readonly placeholder=" "><label for="scode">Vibe code</label><div class="mhelp">Paste into the Vibe seed box to load this vibe</div></div><button class="mbtn outlined" data-copy="scode">Copy</button></div>`);
   if(link)$('#slink').value=link;$('#scode').value=code;
   document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>{const i=$('#'+b.dataset.copy);try{navigator.clipboard.writeText(i.value).then(()=>toast('Copied.'),()=>{i.select();toast('Press Ctrl+C or ⌘C to copy.');});}catch(e){i.select();}});
   let card=null;const cp=shareCard().then(b=>{card=b;const im=$('#scard');if(im&&b){im.src=URL.createObjectURL(b);im.hidden=false;$('#scmsg').hidden=true;}return b;}).catch(()=>{const m=$('#scmsg');if(m)m.textContent='The card could not be made.';});
