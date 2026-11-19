@@ -15,6 +15,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f8f3e8">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 40 40%27%3E%3Cpath d=%27M20 4C25 12 25 22 20 34C15 22 15 12 20 4Z%27 fill=%27%23e3cd92%27/%3E%3Cpath d=%27M20 34C12 30 6 22 6 14C13 18 18 26 20 34ZM20 34C28 30 34 22 34 14C27 18 22 26 20 34Z%27 fill=%27%23c9a95a%27/%3E%3C/svg%3E">
+<meta name="google-adsense-account" content="ca-pub-7008243458158352">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7008243458158352" crossorigin="anonymous"></script>
 </head>
 <body>
 <title>The Vibes Checklist</title>
@@ -1020,9 +1022,9 @@ fillForm();
 
 // ---------- Google AdSense: switched off until a publisher ID is filled in (after AdSense approves the site) ----------
 // client: your "ca-pub-…" ID. slots: the numeric ad unit IDs from AdSense for each placement. Leave a slot blank to keep it empty.
-const ADSENSE={client:'',slots:{adCenter:'',adRight:''}};
+const ADSENSE={client:'ca-pub-7008243458158352',slots:{adCenter:'',adRight:''}};
 (function(){if(!/^ca-pub-\d{10,20}$/.test(ADSENSE.client)||window.claude||location.protocol!=='https:')return;
-  const sc=document.createElement('script');sc.async=true;sc.crossOrigin='anonymous';sc.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADSENSE.client;document.head.appendChild(sc);
+  if(!document.querySelector('script[src*="adsbygoogle.js"]')){const sc=document.createElement('script');sc.async=true;sc.crossOrigin='anonymous';sc.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADSENSE.client;document.head.appendChild(sc);}
   Object.entries(ADSENSE.slots).forEach(([id,slot])=>{const box=document.getElementById(id);if(!box||!/^\d{6,}$/.test(slot))return;const ins=document.createElement('ins');ins.className='adsbygoogle';ins.style.display='block';
     ins.dataset.adClient=ADSENSE.client;ins.dataset.adSlot=slot;ins.dataset.adFormat='auto';ins.dataset.fullWidthResponsive='true';box.appendChild(ins);box.hidden=false;try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}});})();
 
